@@ -89,3 +89,38 @@ geolocation.on('change', function() {
   view.setCenter(pos);
   view.setZoom(18); 
 });
+
+
+var x = document.getElementById("demo");
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  x.innerHTML = "Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude;
+}
+
+
+
+function saveGPXData() {
+  // get GPX data from the GeoJSON feature
+  var format = new ol.format.GPX();
+  var gpxData = format.writeFeatures([geoJsonFeature]);
+
+  // create a new Blob with the GPX data
+  var blob = new Blob([gpxData], {type: "text/xml"});
+
+  // create a new FormData object and append the Blob to it
+  var formData = new FormData();
+  formData.append("gpxData", blob);
+
+  // send a POST request to your server to save the GPX data to a file
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "save_gpx.php");
+  xhr.send(formData);
+}

@@ -11,6 +11,8 @@ $loggedInUsername = $_SESSION['username'];
 
 			if(isset($_POST['saveBtn']))
 			{
+
+
 				$timeCookie = "time";
 				$distanceCookie = "distance";
 				$caloriesCookie = "calories";
@@ -50,6 +52,12 @@ $loggedInUsername = $_SESSION['username'];
 					  echo "Upload Failed";
 					  
 						}
+				// Write GPX data to a file
+                $filename = time() . "_" . $loggedInUsername . ".gpx"; // create a unique file name
+                $filepath = "gpx/" . $filename; // define the path where the file should be saved
+                $handle = fopen($filepath, 'w'); // open the file for writing
+                fwrite($handle, $gpxData); // write the GPX data to the file
+                fclose($handle); // close the file handle
 				}
 			}				
 			
